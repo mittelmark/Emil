@@ -1,1 +1,4 @@
 exportPattern("^[[:lower:]]+")
+S3method("$",Emil)
+S3method("$<-",Emil)
+export(Emil)

@@ -1,4 +1,4 @@
-library(Rpkg)
+library(Emil)
 
 x = 2 + 2
 

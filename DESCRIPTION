@@ -1,11 +1,11 @@
-Package: Rpkg
+Package: Emil
 Type: Package
-Title: your package title change the name on top
+Title: Emil - a minimal object oriented system
 Version: 0.1
 Date: 2023-02-05
-Author: Max Musterman, University of Mustercity
-Maintainer: Max Musterman <musti@uni-mustercity.de>
-Description: R package for ...
+Author: Detlef Groth, University of Potsdam
+Maintainer: Detlef Groth <dgroth@uni-potsdam.de.de>
+Description: R package for programming in a Python like object oriented system.
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 License: MIT + file LICENSE
