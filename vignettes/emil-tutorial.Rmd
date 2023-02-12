@@ -39,7 +39,7 @@ Animal$birthday <- function (self) {
 ```
 
 The Emil package does not distinguish between class and object, just to follow
-standard convention we will uppercase class names and lower case objects. Let's create a first animal.
+standard convention we will uppercase class names and lower case names for objects. Let's create a first animal.
 
 ```{r}
 lucky=Animal$new(name="lucky",type="sheep")
@@ -103,9 +103,21 @@ print(Dog)
 print(fido)
 ```
 
+You can as well attach the class name like this to existing objects or classes at a later point if not given in the new call:
+
+```{r}
+class(micky)=c("Emil","Cat")
+print.Cat <- function (x,...) {
+    print(paste("I am",x$name, "the cat!"))
+    x$meow()
+}
+print(micky)
+```
+
 ## Accumulator example
 
-Let's redo some parts of Hadley's [Accumulator](https://adv-r.hadley.nz/r6.html) example using Emil:
+Let's redo some parts of Hadley's
+[Accumulator](https://adv-r.hadley.nz/r6.html) example using Emil:
 
 ```{r}
 Accumulator <- Emil$new(sum=0)
@@ -144,8 +156,8 @@ ls(x)
 ```
 
 As you you can see using the ls without the argument the variables starting
-with a dot a re not visible. But you can still modify and access the if you
-like ...
+with a dot are not visible. But you can still modify and access the if you
+like ... although you should not do this:
 
 ```{r}
 x$.intern
@@ -158,6 +170,7 @@ x$.intern
 Let's take the example above to demonstrate how you could document your R
 class created with Emil.
  
+Here the file `Accumulator-class.Rd`:
 
 ```
 \docType{class}
@@ -184,10 +197,14 @@ An example class for the Emil OOP system.
 }
 ```
 
-The methods can be as well documented like this but the dollar should be replaced then by an underline:
+The methods can be as well documented like this but the dollar should be
+replaced then by an underline for one of the aliases, your filename should be
+then as well have this underline.
+
+Here the file `Accumulator_add.Rd`:
 
 ```
-\name{Accumulator_add}
+\name{Accumulator$add}
 \alias{Accumulator_add}
 \alias{Accumulator$add}
 \title{Add the value of x to the current accumulated value in sum.}
