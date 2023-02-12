@@ -14,6 +14,8 @@ This prototype is used to create objects for a minimal OO system.
      These objects can be then extended with new methods step by step with the syntax 
      \code{obj$func = function (self,args) { code }}. The argument self is, 
            like in Python the object itself. 
+    
+    For more information look at the tutorial vignette by calling `vignette('emil-tutorial')`. 
 } 
 \examples{ 
 obj=Emil$new() 

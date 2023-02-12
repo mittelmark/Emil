@@ -14,6 +14,8 @@
 #'      These objects can be then extended with new methods step by step with the syntax
 #'      \code{obj$func = function (self,args) { code }}. The argument self is,
 #'            like in Python the object itself.
+#'    
+#'     For more information look at the tutorial vignette by calling `vignette('emil-tutorial')`.
 #' }
 #' \examples{
 #' obj=Emil$new()
@@ -32,19 +34,23 @@
 Emil <- new.env()
 
 Emil$new <- function (self,...) {
-    
     t=new.env()
-    # new addition
+    # parent values
+    for (o in ls(self)) {
+        t[[o]]=self[[o]]
+    }
+    # new additions
     dots <- list(...)
     names <- names(dots)
     for (nm in names) {
         t[[nm]] = dots[[nm]]
     }
-    # end of new addition
-    for (o in ls(self)) {
-        t[[o]]=self[[o]]
+    if ("class" %in% names(t)) {
+        class(t)=c("Emil",t[['class']])
+        
+    } else {
+         class(t)="Emil"
     }
-    class(t)="Emil"
     return(t)
     #return(as.environment(self))
 }
@@ -53,22 +59,21 @@ Emil$.new = Emil$new # in case we overwrite new
 class(Emil)="Emil"
 
 "$<-.Emil" <- function(self,s,value) {
-  if (is.function(value))
-    environment(value) <- self
+  if (is.function(value)) {
+      environment(value) <- self
+  }
   self[[as.character(substitute(s))]] <- value
   return(self)
 }
 
-
 "$.Emil" <- function(x, name) {
-  inherits <- substr(name, 1, 2) != ".."
-
-  res <- get(name, envir = x, inherits = inherits)
-  if (!is.function(res))
-    return(res)
-
-  structure(
-    function(...) res(x, ...),
-    method = res
-  )
+    inherits <- substr(name, 1, 2) != ".."
+    res <- get(name, envir = x, inherits = inherits)
+    if (!is.function(res)) {
+        return(res)
+    }
+    structure(
+        function(...) res(x, ...),
+        method = res
+    )
 }
