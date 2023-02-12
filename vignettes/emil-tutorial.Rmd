@@ -1,0 +1,212 @@
+---
+title: "Tutorial for the Emil package"
+author: Detlef Groth, University of Potsdam
+date: 2023-02-12
+output: 
+    rmarkdown::html_vignette:
+        toc: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r echo=FALSE,results="hide"}
+library(knitr)
+```
+
+## Introduction
+
+The Emil package is an easy to use object oriented programming approach for R
+in the spirit of Pythons object oriented syntax and as well similar to the
+[R6](https://adv-r.hadley.nz/r6.html) system in R. It provides a single small
+R file which can be very easily embedded into your own code with minimal
+effort.
+
+As an example of how to use the package we will create an Animal class/object
+first.
+
+
+```{r}
+library(Emil)
+Animal = Emil$new(age=0,type="generic")
+Animal$getAge <- function (self) {
+    return(self$age)
+}
+Animal$birthday <- function (self) {
+    self$age=self$age+1
+}
+```
+
+The Emil package does not distinguish between class and object, just to follow
+standard convention we will uppercase class names and lower case objects. Let's create a first animal.
+
+```{r}
+lucky=Animal$new(name="lucky",type="sheep")
+lucky$getAge()
+lucky$birthday()
+lucky$getAge()
+```
+
+At any time we can inspect our object using the standard `ls` and `str` functions of R:
+
+```{r}
+ls(lucky)
+str(lucky)
+```
+
+## Inheritance
+
+Like we derive objects we can as well create new templates for other objects. Let's create a cat class based on Animal.
+
+```{r}
+Cat = Animal$new(name="Miez")
+ls(Cat)
+```
+
+We can then extend this class:
+
+```{r}
+Cat$meow <- function (self,x=3) {
+    m=rep("meow",x)
+    return(paste(self$name," says: ", paste(m, collapse=", "),"!",sep=""))
+}
+micky = Cat$new(name="Micky")
+micky$meow(4)
+```
+
+## S3 methods
+
+You can as well create standard S3 methods if you give your objects a new
+class name. Let's create dogs with this approach.
+
+```{r}
+Dog = Animal$new(class="Dog",name="Generic")
+class(Dog)
+Dog$wuff <- function (self) {
+    return("Wuff, wuff!")
+}
+fido = Dog$new(name="Fido")
+class(fido)
+fido$birthday()
+fido$getAge()
+fido$wuff()
+```
+
+Let's now create a S3 method print for Dogs:
+
+```{r}
+print.Dog <- function (x,...) {
+    print(paste("I am a dog with name ",x$name,"!",sep=""))
+}   
+print(Dog)
+print(fido)
+```
+
+## Accumulator example
+
+Let's redo some parts of Hadley's [Accumulator](https://adv-r.hadley.nz/r6.html) example using Emil:
+
+```{r}
+Accumulator <- Emil$new(sum=0)
+Accumulator$add <- function (self,x=1) {
+     self$sum <- self$sum + x 
+     invisible(self) # for method chaining
+}  
+```
+
+Ok now let's create an object:
+
+```{r}
+x <- Accumulator$new() 
+x$add(4)
+x$sum
+```
+
+Method chaining does work as well:
+
+```{r}
+x$add(10)$add(10)$sum
+```
+
+What is the sum?
+
+```{r}
+x$sum
+```
+
+Protecting internal variables against access from the outside does not exists
+in Emil. You should prefix internal variables with a dot to indicate that they should not be modified from the outside.
+
+```{r}
+x$.intern = "hello"
+ls(x)
+```
+
+As you you can see using the ls without the argument the variables starting
+with a dot a re not visible. But you can still modify and access the if you
+like ...
+
+```{r}
+x$.intern
+x$.intern = "world"
+x$.intern
+```
+
+## Documenting Emil objects/classes
+
+Let's take the example above to demonstrate how you could document your R
+class created with Emil.
+ 
+
+```
+\docType{class}
+\name{Accumulator-class}
+\alias{Accumulator}
+\alias{Accumulator-class}
+\title{Example Accumulator class for Emil.}
+\description{
+An example class for the Emil OOP system.
+}
+\section{Fields}{
+  \describe{
+     \item{\code{sum}}{The current amount of the accumlator values}
+  }
+}
+\section{Methods}{
+\itemize{
+   \item \code{add(x=1)}: Add the value of x to the current accumulated value in sum
+}}
+\examples{
+ x = Accumulator$new()
+ x$add(5)
+ x$sum
+}
+```
+
+The methods can be as well documented like this but the dollar should be replaced then by an underline:
+
+```
+\name{Accumulator_add}
+\alias{Accumulator_add}
+\alias{Accumulator$add}
+\title{Add the value of x to the current accumulated value in sum.}
+\description{This is a method of the Accumulator class which adds the given value to the current object}  
+\usage{`Accumulator$add(x=1)`}
+\arguments{
+    \item{x}{the value to be added to the current internal accumulator value sum, default: 1}
+}
+\value{object itself invisibly}    
+\examples{
+ y = Accumulator()
+ y$add(5)
+ y$sum
+ y$add(3)$add(4)
+ y$sum
+}
+```
+
+To see the appropiate manual pages look at the files
+`man/Accumulator-class.Rd` and `man/Accumulator_add.Rd`.
+
+
