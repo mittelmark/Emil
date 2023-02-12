@@ -1,40 +1,75 @@
-# Rpkg
+# Emil
 
-A generic R package template.
+A minimal object oriented system in the spirits of Python's approach.
 
-Just use the green "Use this template" link on top to create your own R-package in Github.
-
-To build, check and install this package you need only an installed R. If you create your repository you have to change the relevant parts entering, package name, author etc in the description file and the library call in the file tests/test-add.R. Then you can start a first check if the package is installable.
-
-
-The commands are the following:
+## Example
 
 ```
-R CMD build .                   # creates a tar.gz file in the current folder
-R CMD check pkgname_0.1.tar.gz  # replace pkgname with the name you entered in the DESCRIPTION file
+library(Emil)
+obj = Emil$new()
+obj$hello <- function (self) {
+    return("Hello World!")
+}
+obj$setX <- function (self,x) {
+    self$x=x
+}
+obj$getX <- function (self) {
+    return(self$x)
+}
+obj2=obj$new(x=6)
 ```
 
-If this is all ok, you can start entering your own code and update your documentation and tests. The template provides as well a simple R script which copies the documentation out of the R-files into the man-directory. If you do not like this approach of combining the documentation with the code in one file you can as well just skip this file and create directly your own Rd-files. The documentation out of the R files is extracted like this:
+## Description
+
+R offers quite a few concepts of object oriented programming:
+[S3](http://adv-r.had.co.nz/S3.html), [S4](http://adv-r.had.co.nz/S4.html),
+[R6](https://adv-r.hadley.nz/r6.html),
+[RC](http://adv-r.had.co.nz/OO-essentials.html#rc),
+[R.oo](https://cran.r-project.org/web/packages/R.oo/index.html),
+[proto](https://cran.r-project.org/web/packages/proto/index.html) and since
+2022 as well [R7](https://rconsortium.github.io/OOP-WG/). If you prefere a
+system which closely follows Python conventions. It is similar to that of the
+proto package, but much smaller making it easier to embed into your current
+package or application.
+
+In contrast to the non-standard packages listened above, R6, R7, R.oo, proto,
+it is just a small single file implementation, to use this approach in your
+own code you can simply copy the file `R/Emil.R` into your folder of R files
+in your package folder and you can use this type of programming. The license,
+MIT, is very permissive and does not require that you change your license if
+you embed this file into your package, application etc.
+
+You can as well use the Emil package like any other package using the
+`install.packages("Emil")` approach once the package is on CRAN. Or in case of local R-scripts just source the file into your code as usually.
+
+## Installation
+
+As package from Github:
 
 ```
-Rscript bin/rman.R R/add.R
+install.packages("remotes")
+remotes::install_github("mittelmark/Emil")
 ```
 
-This apporac is very similar to the approach of the documentation tools [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html), but here you do not need the roxygen2 package, just this simple extraction script `bin/rman.R`. There is as well a Makefile file which provides the neccessary commands to build and install and does as well a check if the R file is newer than the Rd file and only then does the required update. If you use make you can then simple write:
+As package from CRAN:
 
 ```
-make check VERSION=0.1
+install.packages("Emil")
 ```
 
-if your version number is 0.1.
+Inside your own package:
 
-If you do not use make just execute the required commands manually in the terminal.
+- just copy the file `R/Emil.R` to your R source code folder
 
-```
-Rscript bin/rman.R R/add.R
-R CMD build .
-R CMD check pkgname_version.tar.gz
-R CMD INSTALL pkgname_version.tar.gz
-```
+Inside your scripts, applications:
+
+Just copy the code from `R/Emil.R` on top of your own code, or source the file
+in your R script.
+
+## License
+
+MIT see the file [LICENSE](LICENSE)
+
+## Bugs and Suggestions
 
 In case of bugs and suggestions, use the [https://github.com/mittelmark/Rpkg/issues](issues) link on top.
