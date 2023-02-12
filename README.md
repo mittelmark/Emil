@@ -26,7 +26,7 @@ file [R/Accumulator.R](R/Accumulator.R) for the R code and
 documentation.
 
 There is as well a package vignette which you should be able to see after
-installation with `vignette('emil-tutorial')`.
+installation with `vignette('emil-tutorial')`. You can see the vignette code as well here: [vignettes/emil-tutorial.Rmd](vignettes/emil-tutorial.Rmd).
 
 
 ## Description
