@@ -42,27 +42,27 @@ Emil <- new.env()
 Emil$new <- function (self,...) {
     t=new.env()
     # parent values
-    for (o in ls(self)) {
+    for (o in ls(self,all.names=TRUE)) {
         t[[o]]=self[[o]]
     }
     # new additions
     dots <- list(...)
-    names <- names(dots)
-    for (nm in names) {
-        t[[nm]] = dots[[nm]]
+    nms= names(dots)
+    for (nm in nms) {
+        if (nm != "") {
+            t[[nm]] = dots[[nm]]
+        }
     }
     if ("class" %in% names(t)) {
         class(t)=c("Emil",t[['class']])
         
     } else {
          class(t)="Emil"
+     }
+    if (class(t[['.init']]) == "function") {
+        t[['.init']](t)
     }
-    if (class(t[['init']]) == "function") {
-        t[['init']](t)
-    }
-
     return(t)
-    #return(as.environment(self))
 }
 Emil$.new = Emil$new # in case we overwrite new
 
