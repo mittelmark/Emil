@@ -118,9 +118,10 @@ print(micky)
 ## Constructor
 
 Sometimes you like to execute some code at object creation, for instance
-intializue some internal objects based on the given arguments. For this
-purpose there is the argument list at object creation checked for the presence
-of a function called `init` which is then executed with the argument self. Here an example.
+intialize some internal objects based on the given arguments. For this purpose
+there is the argument list at object creation checked for the presence of a
+function called `init` which this function is then executed with the argument
+self. Here an example:
 
 ```{r}
 Graph = Emil$new(type="random",
@@ -137,7 +138,7 @@ Graph = Emil$new(type="random",
 g=Graph$new()   
 g$graph
 h=Graph$new(type="random")
-h
+h$graph
 ```
             
 You could as well create the `init` function after the new call like this:
@@ -145,6 +146,7 @@ You could as well create the `init` function after the new call like this:
 ```{r}
 Graph = Emil$new(type="random")
 Graph$init <- function (self) {
+     print("calling init")
      g=matrix(0,nrow=5,ncol=5)  
         rownames(g)=colnames(g)=LETTERS[1:5]
         if (self$type=="random") {
@@ -156,11 +158,11 @@ Graph$init <- function (self) {
 
 }
 i = Graph$new()
-i$init()
+ls(i)
 i$graph
 ```
 
-But the latter approach would require two function calls by the user.
+The latter approach as well calls the `init` function automatically if new is executed.
 
 ## Accumulator example
 
