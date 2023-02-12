@@ -19,6 +19,16 @@ obj$getX <- function (self) {
 obj2=obj$new(x=6)
 ```
 
+An example with documentation is as well embedded in the R package, see the
+file [R/Accumulator.R](R/Accumulator.R) for the R code and
+[man/Accumulator-class.Rd](man/Accumulator-class.Rd) and
+[man/Accumulator_add.Rd](man/Accumulator_add.Rd) for the generated
+documentation.
+
+There is as well a package vignette which you should be able to see after
+installation with `vignette('emil-tutorial')`.
+
+
 ## Description
 
 R offers quite a few concepts of object oriented programming:
@@ -28,8 +38,8 @@ R offers quite a few concepts of object oriented programming:
 [R.oo](https://cran.r-project.org/web/packages/R.oo/index.html),
 [proto](https://cran.r-project.org/web/packages/proto/index.html) and since
 2022 as well [R7](https://rconsortium.github.io/OOP-WG/). If you prefere a
-system which closely follows Python conventions. It is similar to that of the
-proto package, but much smaller making it easier to embed into your current
+system which closely follows Python conventions you can use `Emil`. The system implemented in around 50 lines of R code is similar to that of the
+`proto` package, but much smaller, around 50 lines of code, making it easier to embed into your current
 package or application.
 
 In contrast to the non-standard packages listened above, R6, R7, R.oo, proto,
