@@ -103,7 +103,8 @@ print(Dog)
 print(fido)
 ```
 
-You can as well attach the class name like this to existing objects or classes at a later point if not given in the new call:
+You can as well attach the class name like this to existing objects or classes
+at a later point if not given in the new call:
 
 ```{r}
 class(micky)=c("Emil","Cat")
@@ -113,6 +114,53 @@ print.Cat <- function (x,...) {
 }
 print(micky)
 ```
+
+## Constructor
+
+Sometimes you like to execute some code at object creation, for instance
+intializue some internal objects based on the given arguments. For this
+purpose there is the argument list at object creation checked for the presence
+of a function called `init` which is then executed with the argument self. Here an example.
+
+```{r}
+Graph = Emil$new(type="random",
+    init=function (self) {
+        g=matrix(0,nrow=5,ncol=5)  
+        rownames(g)=colnames(g)=LETTERS[1:5]
+        if (self$type=="random") {
+            g[upper.tri(g)]=rbinom(10,1,p=0.4)
+        } else {
+            g['A',c(2:5)]=1
+        }
+        self$graph=g
+   })
+g=Graph$new()   
+g$graph
+h=Graph$new(type="random")
+h
+```
+            
+You could as well create the `init` function after the new call like this:
+
+```{r}
+Graph = Emil$new(type="random")
+Graph$init <- function (self) {
+     g=matrix(0,nrow=5,ncol=5)  
+        rownames(g)=colnames(g)=LETTERS[1:5]
+        if (self$type=="random") {
+            g[upper.tri(g)]=rbinom(10,1,p=0.4)
+        } else {
+            g['A',c(2:5)]=1
+        }
+        self$graph=g
+
+}
+i = Graph$new()
+i$init()
+i$graph
+```
+
+But the latter approach would require two function calls by the user.
 
 ## Accumulator example
 

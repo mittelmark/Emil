@@ -1,3 +1,4 @@
+#' \docType{class}
 #' \name{Emil}
 #' \alias{Emil-class}
 #' \alias{Emil}
@@ -5,6 +6,11 @@
 #' \usage{`Emil$new()`}
 #' \description{
 #' This prototype is used to create objects for a minimal OO system.
+#' }
+#' \section{Methods}{
+#' \describe{
+#'    \item{\code{Emil$new(...)}}{Creates new objects of class Emil arguments are stored as keys of the object, a function with name init is called automatically if given as argument}
+#' }
 #' }
 #' \value{Object of class \code{Emil} which can be extended with functions and properties using \emph{prototype based programming}.}
 #' 
@@ -51,6 +57,10 @@ Emil$new <- function (self,...) {
     } else {
          class(t)="Emil"
     }
+    if (class(t[['init']]) == "function") {
+        t[['init']](t)
+    }
+
     return(t)
     #return(as.environment(self))
 }
