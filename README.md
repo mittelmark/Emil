@@ -22,7 +22,7 @@ obj2=obj$new(x=6)
 ## Description
 
 R offers quite a few concepts of object oriented programming:
-[S3](http://adv-r.had.co.nz/S3.html), [S4](http://adv-r.had.co.nz/S4.html),
+[S3](https://adv-r.hadley.nz/s3.html), [S4](https://adv-r.had.co.nz/S4.html),
 [R6](https://adv-r.hadley.nz/r6.html),
 [RC](http://adv-r.had.co.nz/OO-essentials.html#rc),
 [R.oo](https://cran.r-project.org/web/packages/R.oo/index.html),
