@@ -82,4 +82,4 @@ MIT see the file [LICENSE](LICENSE)
 
 ## Bugs and Suggestions
 
-In case of bugs and suggestions, use the [https://github.com/mittelmark/Rpkg/issues](issues) link on top.
+In case of bugs and suggestions, use the [https://github.com/mittelmark/Emil/issues](issues) link on top.
